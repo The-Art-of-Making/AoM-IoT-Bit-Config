@@ -1,7 +1,15 @@
 export default class Secret {
     constructor() {
         this.template = ["REQUEST_RATE_SEC", "SECRET_SSID", "SECRET_PASS", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
-        this.fields = []
+        this.fields = {
+            0: "",
+            1: "",
+            2: "",
+            3: "",
+            4: "",
+            5: "",
+            6: ""
+        }
         this.fields_length = 7
     }
     getString() {
@@ -31,5 +39,8 @@ export default class Secret {
     }
     getField(num) {
         return (this.fields[num]) ? this.fields[num] : this.template[num]
+    }
+    setField(num, value) {
+        this.fields[num] = value
     }
 }

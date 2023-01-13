@@ -16,6 +16,19 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "fs": {
+        "readFile": true,
+        "writeFile": true,
+        "exists": true,
+        "scope": {
+          "allow": [
+            "$HOME/*"
+          ]
+        }
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
@@ -33,7 +46,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "io.github.delta-12.aom-iot-bit-config",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
