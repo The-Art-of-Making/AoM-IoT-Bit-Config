@@ -23,7 +23,8 @@
         "exists": true,
         "scope": {
           "allow": [
-            "$HOME/*"
+            "$APP/*",
+            "./*"
           ]
         }
       },

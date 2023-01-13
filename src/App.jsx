@@ -5,6 +5,8 @@ import { readSecretsFile, writeSecretsFile } from "./file_handler"
 import Input from "./Input"
 import Secret from "./secret"
 
+const secretsFilePath = "./secrets_template_SD.txt"
+
 function App() {
   const [REQUEST_RATE_SEC, set_REQUEST_RATE_SEC] = useState("")
   const [SECRET_SSID, set_SECRET_SSID] = useState("")
@@ -25,27 +27,24 @@ function App() {
   }
 
   async function readFile() {
-    let secrets = await readSecretsFile("secrets_template_SD.txt", BaseDirectory.Resource)
+    let secrets = await readSecretsFile(secretsFilePath)
     secrets.log()
     for (let i = 0; i < secrets.fields_length; i++)
     {
       setFields[i](secrets.getField(i))
     }
-    const resourceDirPath = await resourceDir();
-    console.log(resourceDirPath)
   }
 
   async function writeFile() {
     let secret = new Secret
     const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
     for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
-    await writeSecretsFile("secrets_template_SD.txt", BaseDirectory.Resource, secret)
+    await writeSecretsFile(secretsFilePath, secret)
   }
 
   async function reset() {
     let secret = new Secret
-    await writeSecretsFile("secrets_template_SD.txt", BaseDirectory.Resource, secret)
-    await readFile()
+    writeSecretsFile(secretsFilePath, secret).then(() => { readFile() })
   }
 
   return (
@@ -54,11 +53,11 @@ function App() {
 
       <div className="row">
         <div>
-          <button className="btn btn-success m-1" onClick={() => readFile()}>
+          <button className="btn btn-primary m-1" onClick={() => readFile()}>
             Load
           </button>
-          <button className="btn btn-primary m-1" onClick={() => writeFile()}>
-            Configure
+          <button className="btn btn-success m-1" onClick={() => writeFile()}>
+            Save
           </button>
           <button className="btn btn-danger m-1" onClick={() => reset()}>
             Reset
