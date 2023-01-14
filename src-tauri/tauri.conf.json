@@ -26,9 +26,6 @@
             "$RESOURCE/*"
           ]
         }
-      },
-      "path": {
-        "all": true
       }
     },
     "bundle": {
