@@ -25,3 +25,6 @@ dist-ssr
 
 # secrets file
 secrets_template_SD.txt
+
+# vscode
+.vscode
