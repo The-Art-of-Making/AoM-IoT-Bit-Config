@@ -7,6 +7,7 @@ export default function Input(props) {
                     type="text"
                     onChange={(e) => props.setInput(e.currentTarget.value)}
                     placeholder={props.currentInput}
+                    value={props.currentInput}
                 />
             </fieldset>
         </div>

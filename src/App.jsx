@@ -1,11 +1,9 @@
 import { useState } from "react"
-import { BaseDirectory } from '@tauri-apps/api/fs'
-import { resourceDir } from '@tauri-apps/api/path';
 import { readSecretsFile, writeSecretsFile } from "./file_handler"
 import Input from "./Input"
 import Secret from "./secret"
 
-const secretsFilePath = "./secrets_template_SD.txt"
+const secretsFilePath = "secrets_template_SD.txt"
 
 function App() {
   const [REQUEST_RATE_SEC, set_REQUEST_RATE_SEC] = useState("")
