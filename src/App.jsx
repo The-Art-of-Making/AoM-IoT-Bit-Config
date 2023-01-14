@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { BaseDirectory } from "@tauri-apps/api/fs"
 import { readSecretsFile, writeSecretsFile } from "./file_handler"
 import Input from "./Input"
 import Secret from "./secret"
 
-const secretsFilePath = "secrets_template_SD.txt"
+const secretsFilePath = BaseDirectory.Resource
+const secretsFileName = "secrets_template_SD.txt"
 
 function App() {
   const [REQUEST_RATE_SEC, set_REQUEST_RATE_SEC] = useState("")
@@ -25,7 +27,7 @@ function App() {
   }
 
   async function readFile() {
-    let secrets = await readSecretsFile(secretsFilePath)
+    let secrets = await readSecretsFile(secretsFileName, secretsFilePath)
     secrets.log()
     for (let i = 0; i < secrets.fields_length; i++)
     {
@@ -37,12 +39,13 @@ function App() {
     let secret = new Secret
     const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
     for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
-    await writeSecretsFile(secretsFilePath, secret)
+    await writeSecretsFile(secretsFileName, secretsFilePath, secret)
   }
 
   async function reset() {
     let secret = new Secret
-    writeSecretsFile(secretsFilePath, secret).then(() => { readFile() })
+    writeSecretsFile(secretsFileName, secretsFilePath, secret)
+    await readFile()
   }
 
   return (
@@ -63,13 +66,17 @@ function App() {
         </div>
       </div>
 
-      <Input label="REQUEST_RATE_SEC" currentInput={REQUEST_RATE_SEC} setInput={set_REQUEST_RATE_SEC} />
-      <Input label="SECRET_SSID" currentInput={SECRET_SSID} setInput={set_SECRET_SSID} />
-      <Input label="SECRET_PASS" currentInput={SECRET_PASS} setInput={set_SECRET_PASS} />
-      <Input label="IO_USERNAME" currentInput={IO_USERNAME} setInput={set_IO_USERNAME} />
-      <Input label="IO_GROUP" currentInput={IO_GROUP} setInput={set_IO_GROUP} />
-      <Input label="IO_FEED_KEY" currentInput={IO_FEED_KEY} setInput={set_IO_FEED_KEY} />
-      <Input label="IO_KEY" currentInput={IO_KEY} setInput={set_IO_KEY} />
+      <table className="table table-hover mt-3 mb-3">
+        <tbody>
+          <Input label="REQUEST_RATE_SEC" currentInput={REQUEST_RATE_SEC} setInput={set_REQUEST_RATE_SEC} />
+          <Input label="SECRET_SSID" currentInput={SECRET_SSID} setInput={set_SECRET_SSID} />
+          <Input label="SECRET_PASS" currentInput={SECRET_PASS} setInput={set_SECRET_PASS} />
+          <Input label="IO_USERNAME" currentInput={IO_USERNAME} setInput={set_IO_USERNAME} />
+          <Input label="IO_GROUP" currentInput={IO_GROUP} setInput={set_IO_GROUP} />
+          <Input label="IO_FEED_KEY" currentInput={IO_FEED_KEY} setInput={set_IO_FEED_KEY} />
+          <Input label="IO_KEY" currentInput={IO_KEY} setInput={set_IO_KEY} />
+        </tbody>
+      </table>
 
     </div>
   )

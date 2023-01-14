@@ -1,34 +1,26 @@
-import { exists, readTextFile, writeFile, FsTextFileOption, writeTextFile, BaseDirectory } from '@tauri-apps/api/fs'
+import { exists, readTextFile, writeTextFile, BaseDirectory } from '@tauri-apps/api/fs'
 import Secret from "./secret.js"
 
-const readSecretsFile = async (secretsFilePath) => {
+const readSecretsFile = async (secretsFileName: string, secretsFilePath: BaseDirectory) => {
     let secret = new Secret
-    let exist = await exists(secretsFilePath, { dir: BaseDirectory.Resource })
-    // let exist = await exists(secretsFilePath)
-    console.log(exist)
+    let exist = await exists(secretsFileName, { dir: secretsFilePath })
     if (!exist) {
         console.log("No file secrets file found")
-        await writeSecretsFile(secretsFilePath, secret)
+        await writeSecretsFile(secretsFileName, secretsFilePath, secret)
         console.log("Default template saved")
         return secret
     }
     if (exist) {
         console.log("Secrets file found")
-        let content = await readTextFile(secretsFilePath, {dir: BaseDirectory.Resource})
-        // let content = await readTextFile(secretsFilePath)
+        let content = await readTextFile(secretsFileName, {dir: secretsFilePath})
         console.log("Reading from secrets file")
         secret.parseFromString(content)
         return secret
     }
 }
 
-const writeSecretsFile = async (secretsFilePath: string, secret: Secret) => {
-    const secretsFile: FsTextFileOption = {
-        path: secretsFilePath,
-        contents: secret.getString()
-    }
-    await writeTextFile(secretsFilePath, secret.getString(), {dir: BaseDirectory.Resource})
-    // await writeFile(secretsFile)
+const writeSecretsFile = async (secretsFileName: string, secretsFilePath: BaseDirectory, secret: Secret) => {
+    await writeTextFile(secretsFileName, secret.getString(), {dir: secretsFilePath})
     console.log("Secrets written to file")
 }
 

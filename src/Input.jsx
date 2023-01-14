@@ -1,15 +1,18 @@
 export default function Input(props) {
     return (
-        <div className="form-group m-1">
-            <h6>{props.label}</h6>
-            <fieldset>
+        <tr>
+            <th scope="row">{props.label}</th>
+            <td></td>
+            <td></td>
+            <td>
                 <input
+                    className="form-control"
                     type="text"
                     onChange={(e) => props.setInput(e.currentTarget.value)}
                     placeholder={props.currentInput}
                     value={props.currentInput}
                 />
-            </fieldset>
-        </div>
+            </td>
+        </tr>
     )
 }
