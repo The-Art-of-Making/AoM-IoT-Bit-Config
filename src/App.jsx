@@ -52,10 +52,10 @@ function App() {
     <div className="container">
       <h1>AoM IoT Bit Config</h1>
 
-      <div className="row">
+      <div className="row" style={{textAlign: "center"}}>
         <div>
           <button className="btn btn-primary m-1" onClick={() => readFile()}>
-            Load
+            Load Existing Data
           </button>
           <button className="btn btn-success m-1" onClick={() => writeFile()}>
             Save
@@ -67,14 +67,55 @@ function App() {
       </div>
 
       <table className="table table-hover mt-3 mb-3">
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
         <tbody>
-          <Input label="REQUEST_RATE_SEC" currentInput={REQUEST_RATE_SEC} setInput={set_REQUEST_RATE_SEC} />
-          <Input label="SECRET_SSID" currentInput={SECRET_SSID} setInput={set_SECRET_SSID} />
-          <Input label="SECRET_PASS" currentInput={SECRET_PASS} setInput={set_SECRET_PASS} />
-          <Input label="IO_USERNAME" currentInput={IO_USERNAME} setInput={set_IO_USERNAME} />
-          <Input label="IO_GROUP" currentInput={IO_GROUP} setInput={set_IO_GROUP} />
-          <Input label="IO_FEED_KEY" currentInput={IO_FEED_KEY} setInput={set_IO_FEED_KEY} />
-          <Input label="IO_KEY" currentInput={IO_KEY} setInput={set_IO_KEY} />
+          <Input
+            label="Request Rate (seconds)"
+            description="Determines how often the IoT bit will try to download data, e.g. the bit will request feed data every 2 seconds with a value of 2"
+            currentInput={REQUEST_RATE_SEC}
+            setInput={set_REQUEST_RATE_SEC}
+          />
+          <Input
+            label="Wifi SSID"
+            description="Name of the Wifi network the bit will connect to"
+            currentInput={SECRET_SSID}
+            setInput={set_SECRET_SSID}
+          />
+          <Input
+            label="Wifi Password"
+            description="Password of the Wifi network the bit will connect to"
+            currentInput={SECRET_PASS}
+            setInput={set_SECRET_PASS}
+          />
+          <Input
+            label="Adafruit IO Username"
+            description="Your Adafruit IO username"
+            currentInput={IO_USERNAME}
+            setInput={set_IO_USERNAME}
+          />
+          <Input
+            label="Adafruit IO Group"
+            description="Name of the group with the feed the bit should access"
+            currentInput={IO_GROUP}
+            setInput={set_IO_GROUP}
+          />
+          <Input
+            label="Adafruit IO Feed Key"
+            description="Name of the feed the bit will GET data from or POST data to"
+            currentInput={IO_FEED_KEY}
+            setInput={set_IO_FEED_KEY}
+          />
+          <Input
+            label="Adafruit IO Key"
+            description="Key used to connect to Adafruit IO services, usually is 32 characters and begins with 'aio_'"
+            currentInput={IO_KEY}
+            setInput={set_IO_KEY}
+          />
         </tbody>
       </table>
 

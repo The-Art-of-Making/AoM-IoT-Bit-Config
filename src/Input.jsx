@@ -1,9 +1,7 @@
 export default function Input(props) {
     return (
         <tr>
-            <th scope="row">{props.label}</th>
-            <td></td>
-            <td></td>
+            <td><p style={{fontWeight: "bold"}}>{props.label}</p><p>{props.description}</p></td>
             <td>
                 <input
                     className="form-control"
