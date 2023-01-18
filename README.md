@@ -31,3 +31,7 @@ To build the project, run
 `npm run tauri build`
 
 This will create a build in `src-tauri/target/release` for your system's OS.
+
+Note: If you are on a Debian-based system such as Ubuntu, you may need to install additional packages with the following command in order to build the project for your system
+
+`sudo apt update && sudo apt install -y libglib2.0-dev libgtk-3-dev libsoup2.4-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev`
