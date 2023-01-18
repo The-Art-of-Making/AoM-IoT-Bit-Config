@@ -5,7 +5,7 @@ import Input from "./Input"
 import Secret from "./secret"
 
 const secretsFilePath = BaseDirectory.Resource
-const secretsFileName = "secrets_template_SD.txt"
+const secretsFileName = "secrets.txt"
 
 function App() {
   const [REQUEST_RATE_SEC, set_REQUEST_RATE_SEC] = useState("")
@@ -106,7 +106,7 @@ function App() {
           />
           <Input
             label="Adafruit IO Feed Key"
-            description="Name of the feed the bit will GET data from or POST data to"
+            description="Key for the feed the bit will GET data from or POST data to"
             currentInput={IO_FEED_KEY}
             setInput={set_IO_FEED_KEY}
           />
