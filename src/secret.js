@@ -1,6 +1,8 @@
+const defaultSecretValues = ["REQUEST_RATE_SEC", "SECRET_SSID", "SECRET_PASS", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
+
 export default class Secret {
-    constructor(template = ["REQUEST_RATE_SEC", "SECRET_SSID", "SECRET_PASS", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]) {
-        this.template = template
+    constructor(template = []) {
+        this.template = template.length > 0 ? template : defaultSecretValues
         this.fields_length = template.length
         this.fields = {}
         for (let i = 0; i < this.fields_length; i++) {

@@ -1,8 +1,8 @@
 import { exists, readTextFile, writeTextFile, BaseDirectory } from '@tauri-apps/api/fs'
 import Secret from "./secret.js"
 
-const readSecretsFile = async (secretsFileName: string, secretsFilePath: BaseDirectory) => {
-    let secret = new Secret
+const readSecretsFile = async (secretsFileName: string, secretsFilePath: BaseDirectory, defaultSecretValues: string[] = []) => {
+    let secret = new Secret(defaultSecretValues)
     let exist = await exists(secretsFileName, { dir: secretsFilePath })
     if (!exist) {
         console.log("No file secrets file found")

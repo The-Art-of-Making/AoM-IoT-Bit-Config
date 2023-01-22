@@ -7,7 +7,7 @@ import Secret from "./secret"
 
 const secretsFilePath = BaseDirectory.Resource
 const secretsFileName = "secrets.txt"
-const defaultSecretValues = ["2", "G34", "designthinking", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
+const secretValues = ["2", "G34", "designthinking", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
 
 function App() {
   const [REQUEST_RATE_SEC, set_REQUEST_RATE_SEC] = useState("")
@@ -29,7 +29,7 @@ function App() {
   }
 
   async function readFile() {
-    let secrets = await readSecretsFile(secretsFileName, secretsFilePath)
+    let secrets = await readSecretsFile(secretsFileName, secretsFilePath, secretValues)
     secrets.log()
     for (let i = 0; i < secrets.fields_length; i++)
     {
@@ -38,14 +38,14 @@ function App() {
   }
 
   async function writeFile() {
-    let secret = new Secret(defaultSecretValues)
+    let secret = new Secret(secretValues)
     const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
     for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
     await writeSecretsFile(secretsFileName, secretsFilePath, secret)
   }
 
   async function reset() {
-    let secret = new Secret(defaultSecretValues)
+    let secret = new Secret(secretValues)
     writeSecretsFile(secretsFileName, secretsFilePath, secret)
     await readFile()
   }
