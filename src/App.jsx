@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { BaseDirectory } from "@tauri-apps/api/fs"
 import { readSecretsFile, writeSecretsFile } from "./file_handler"
+import Table from "./Table"
 import Input from "./Input"
 import Secret from "./secret"
 
 const secretsFilePath = BaseDirectory.Resource
 const secretsFileName = "secrets.txt"
+const defaultSecretValues = ["2", "G34", "designthinking", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
 
 function App() {
   const [REQUEST_RATE_SEC, set_REQUEST_RATE_SEC] = useState("")
@@ -36,20 +38,20 @@ function App() {
   }
 
   async function writeFile() {
-    let secret = new Secret
+    let secret = new Secret(defaultSecretValues)
     const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
     for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
     await writeSecretsFile(secretsFileName, secretsFilePath, secret)
   }
 
   async function reset() {
-    let secret = new Secret
+    let secret = new Secret(defaultSecretValues)
     writeSecretsFile(secretsFileName, secretsFilePath, secret)
     await readFile()
   }
 
   return (
-    <div className="container">
+    <div className="container pb-5">
       <h1>AoM IoT Bit Config</h1>
 
       <div className="row" style={{textAlign: "center"}}>
@@ -66,31 +68,13 @@ function App() {
         </div>
       </div>
 
-      <table className="table table-hover mt-3 mb-3">
-        <thead>
-          <tr>
-            <th scope="col">Data</th>
-            <th scope="col">Value</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table title="Adafruit IO" hide={false} body={
+        <>
           <Input
             label="Request Rate (seconds)"
             description="Determines how often the IoT bit will try to download data, e.g. the bit will request feed data every 2 seconds with a value of 2"
             currentInput={REQUEST_RATE_SEC}
             setInput={set_REQUEST_RATE_SEC}
-          />
-          <Input
-            label="Wifi SSID"
-            description="Name of the Wifi network the bit will connect to"
-            currentInput={SECRET_SSID}
-            setInput={set_SECRET_SSID}
-          />
-          <Input
-            label="Wifi Password"
-            description="Password of the Wifi network the bit will connect to"
-            currentInput={SECRET_PASS}
-            setInput={set_SECRET_PASS}
           />
           <Input
             label="Adafruit IO Username"
@@ -116,8 +100,25 @@ function App() {
             currentInput={IO_KEY}
             setInput={set_IO_KEY}
           />
-        </tbody>
-      </table>
+        </>
+      } />
+
+      <Table title="Wifi" hide={true} body={
+        <>
+          <Input
+            label="Wifi SSID"
+            description="Name of the Wifi network the bit will connect to"
+            currentInput={SECRET_SSID}
+            setInput={set_SECRET_SSID}
+          />
+          <Input
+            label="Wifi Password"
+            description="Password of the Wifi network the bit will connect to"
+            currentInput={SECRET_PASS}
+            setInput={set_SECRET_PASS}
+          />
+        </>
+      } />
 
     </div>
   )

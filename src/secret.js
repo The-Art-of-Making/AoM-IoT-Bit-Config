@@ -1,16 +1,11 @@
 export default class Secret {
-    constructor() {
-        this.template = ["REQUEST_RATE_SEC", "SECRET_SSID", "SECRET_PASS", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
-        this.fields = {
-            0: "",
-            1: "",
-            2: "",
-            3: "",
-            4: "",
-            5: "",
-            6: ""
+    constructor(template = ["REQUEST_RATE_SEC", "SECRET_SSID", "SECRET_PASS", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]) {
+        this.template = template
+        this.fields_length = template.length
+        this.fields = {}
+        for (let i = 0; i < this.fields_length; i++) {
+            this.fields[i] = ""
         }
-        this.fields_length = 7
     }
     getString() {
         let output = ""
