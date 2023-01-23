@@ -68,7 +68,7 @@ function App() {
         </div>
       </div>
 
-      <Table title="Adafruit IO" hide={false} body={
+      <Table title="Adafruit IO" hide={true} body={
         <>
           <Input
             label="Request Rate (seconds)"
