@@ -1,5 +1,9 @@
 # AoM IoT Bit SD Config
 
+A simple, cross-platform GUI to generate the `secrets.txt` config file for the AoM IoT Bit.
+
+Created using Tauri and React.
+
 ## Prerequisites
 
 1. Rust and Cargo
