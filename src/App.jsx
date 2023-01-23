@@ -107,13 +107,13 @@ function App() {
         <>
           <Input
             label="Wifi SSID"
-            description="Name of the Wifi network the bit will connect to"
+            description="Name of the Wifi network the bit will connect to. If you are using a phone as a mobile hotspot, it will be the name of your phone."
             currentInput={SECRET_SSID}
             setInput={set_SECRET_SSID}
           />
           <Input
             label="Wifi Password"
-            description="Password of the Wifi network the bit will connect to"
+            description="Password of the Wifi network the bit will connect to. Keep the SSID and password a secret!"
             currentInput={SECRET_PASS}
             setInput={set_SECRET_PASS}
           />
