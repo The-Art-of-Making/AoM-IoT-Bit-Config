@@ -7,7 +7,7 @@ import Secret from "./secret"
 
 const secretsFilePath = BaseDirectory.Resource
 const secretsFileName = "secrets.txt"
-const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "IO_FEED_KEY", "aio_IcBf80xk6xCixEHC24RZh3BmkHHc"]
+const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "", "aio_IcBf80xk6xCixEHC24RZh3BmkHHc"]
 const ioPlusFeedKeyPrefix = "cloud.feed-"
 const feedLetters = ["a", "b", "c", "d", "e", "f"]
 
