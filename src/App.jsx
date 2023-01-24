@@ -49,14 +49,18 @@ function App() {
     for (let i = 0; i < secrets.fields_length; i++)
     {
       setFields[i](secrets.getField(i))
-    }
-    for (let i = 0; i < feedLetters.length; i++)
-    {
-      if (IO_FEED_KEY === ioPlusFeedKeyPrefix + feedLetters[i]) {
-        set_IO_FEED_KEY(feedLetters[i])
+
+      if (i === 5)
+      {
+        set_IO_PLUS_FEED_KEY("")
+        for (let j = 0; j < feedLetters.length; j++)
+        {
+          if (secrets.getField(i) === ioPlusFeedKeyPrefix + feedLetters[j]) {
+            set_IO_PLUS_FEED_KEY(feedLetters[j])
+          }
+        }
       }
     }
-    set_IO_PLUS_FEED_KEY(IO_FEED_KEY)
   }
 
   async function writeFile() {
