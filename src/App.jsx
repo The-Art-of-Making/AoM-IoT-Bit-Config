@@ -1,12 +1,11 @@
 import { useState } from "react"
-import { BaseDirectory } from "@tauri-apps/api/fs"
+import { resolveResource } from "@tauri-apps/api/path"
 import { readSecretsFile, writeSecretsFile } from "./file_handler"
 import Table from "./Table"
 import Input from "./Input"
 import Secret from "./secret"
 
-const secretsFilePath = BaseDirectory.Resource
-const secretsFileName = "secrets.txt"
+const secretsFile = "./secrets.txt"
 const secretValues = ["2", "G34", "designthinking", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
 
 function App() {
@@ -28,8 +27,14 @@ function App() {
     6: set_IO_KEY
   }
 
+  async function getSecretsFilePath() {
+    const secretsFilePath = await resolveResource(secretsFile)
+    return secretsFilePath
+  }
+
   async function readFile() {
-    let secrets = await readSecretsFile(secretsFileName, secretsFilePath, secretValues)
+    const secretsFilePath = await getSecretsFilePath()
+    let secrets = await readSecretsFile(secretsFilePath, secretValues)
     secrets.log()
     for (let i = 0; i < secrets.fields_length; i++)
     {
@@ -38,15 +43,20 @@ function App() {
   }
 
   async function writeFile() {
+    const secretsFilePath = await getSecretsFilePath()
     let secret = new Secret(secretValues)
     const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
-    for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
-    await writeSecretsFile(secretsFileName, secretsFilePath, secret)
+    for (let i = 0; i < currentFields.length; i++)
+    {
+      secret.setField(i, currentFields[i])
+    }
+    await writeSecretsFile(secretsFilePath, secret)
   }
 
   async function reset() {
+    const secretsFilePath = await getSecretsFilePath()
     let secret = new Secret(secretValues)
-    writeSecretsFile(secretsFileName, secretsFilePath, secret)
+    writeSecretsFile(secretsFilePath, secret)
     await readFile()
   }
 

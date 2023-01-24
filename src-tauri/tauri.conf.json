@@ -26,6 +26,9 @@
             "$RESOURCE/*"
           ]
         }
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
@@ -43,7 +46,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "io.github.delta-12.aom-iot-bit-config",
+      "identifier": "com.github.the-art-of-making.aom-iot-bit-config",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -52,7 +55,9 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "secrets.txt"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
@@ -72,7 +77,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "aom-iot-bit-config",
+        "title": "AoM IoT Bit Secrets Config",
         "width": 800
       }
     ]
