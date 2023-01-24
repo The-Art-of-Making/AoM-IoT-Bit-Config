@@ -55,9 +55,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [
-        "secrets.txt"
-      ],
+      "resources": [],
       "shortDescription": "",
       "targets": "all",
       "windows": {
