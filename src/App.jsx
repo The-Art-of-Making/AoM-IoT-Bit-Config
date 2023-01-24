@@ -88,19 +88,19 @@ function App() {
           />
           <Input
             label="Adafruit IO Username"
-            description="Your Adafruit IO username"
+            description="The Adafruit IO username of the AoM Cloud - aom_cloud"
             currentInput={IO_USERNAME}
             setInput={set_IO_USERNAME}
           />
           <Input
             label="Adafruit IO Group"
-            description="Name of the group with the feed the bit should access"
+            description="Name of the group with the feed the bit should access - cloud"
             currentInput={IO_GROUP}
             setInput={set_IO_GROUP}
           />
           <Input
             label="Adafruit IO Feed Key"
-            description="Key for the feed the bit will GET data from or POST data to"
+            description="Key for the feed the bit will GET data from or POST data to - feed X"
             currentInput={IO_FEED_KEY}
             setInput={set_IO_FEED_KEY}
           />
@@ -117,13 +117,13 @@ function App() {
         <>
           <Input
             label="Wifi SSID"
-            description="Name of the Wifi network the bit will connect to. If you are using a phone as a mobile hotspot, it will be the name of your phone."
+            description="(Case-sensitive!) Name of the Wifi network the bit will connect to. The SSID of G34 WiFi is G34. If you are using a phone as a mobile hotspot, it will be the name of your phone."
             currentInput={SECRET_SSID}
             setInput={set_SECRET_SSID}
           />
           <Input
             label="Wifi Password"
-            description="Password of the Wifi network the bit will connect to. Keep the SSID and password a secret!"
+            description="(Case-sensitive!) Password of the Wifi network the bit will connect to. The Password of G34 WiFi is designthinking. Keep the SSID and password a secret!"
             currentInput={SECRET_PASS}
             setInput={set_SECRET_PASS}
           />
