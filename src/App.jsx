@@ -8,7 +8,7 @@ import Secret from "./secret"
 const secretsFilePath = BaseDirectory.Resource
 const secretsFileName = "secrets.txt"
 const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "", "aio_IcBf80xk6xCixEHC24RZh3BmkHHc"]
-const ioPlusFeedKeyPrefix = "cloud.feed-"
+const ioPlusFeedKeyPrefix = "feed-"
 const feedLetters = ["a", "b", "c", "d", "e", "f"]
 
 function App() {
@@ -32,12 +32,15 @@ function App() {
   }
 
   function getIOKey() {
+    let ioFeedKey = IO_FEED_KEY
     const feedLetterIndex = feedLetters.indexOf(IO_PLUS_FEED_KEY)
     if (feedLetterIndex > -1)
     {
-      console.log(IO_PLUS_FEED_KEY, feedLetterIndex)
-      set_IO_FEED_KEY(ioPlusFeedKeyPrefix + feedLetters[feedLetterIndex])
+      let key = ioPlusFeedKeyPrefix + feedLetters[feedLetterIndex]
+      set_IO_FEED_KEY(key)
+      ioFeedKey = key
     }
+    return ioFeedKey
   }
 
   async function readFile() {
@@ -47,13 +50,18 @@ function App() {
     {
       setFields[i](secrets.getField(i))
     }
+    for (let i = 0; i < feedLetters.length; i++)
+    {
+      if (IO_FEED_KEY === ioPlusFeedKeyPrefix + feedLetters[i]) {
+        set_IO_FEED_KEY(feedLetters[i])
+      }
+    }
     set_IO_PLUS_FEED_KEY(IO_FEED_KEY)
   }
 
   async function writeFile() {
     let secret = new Secret(defaultSecretValues)
-    getIOKey()
-    const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
+    const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, getIOKey(), IO_KEY]
     for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
     await writeSecretsFile(secretsFileName, secretsFilePath, secret)
   }
