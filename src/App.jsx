@@ -7,7 +7,7 @@ import Secret from "./secret"
 
 const secretsFilePath = BaseDirectory.Resource
 const secretsFileName = "secrets.txt"
-const secretValues = ["2", "G34", "designthinking", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
+const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "IO_FEED_KEY", "aio_IcBf80xk6xCixEHC24RZh3BmkHHc"]
 const ioPlusFeedKeyPrefix = "cloud.feed-"
 const feedLetters = ["a", "b", "c", "d", "e", "f"]
 
@@ -41,7 +41,7 @@ function App() {
   }
 
   async function readFile() {
-    let secrets = await readSecretsFile(secretsFileName, secretsFilePath, secretValues)
+    let secrets = await readSecretsFile(secretsFileName, secretsFilePath, defaultSecretValues)
     secrets.log()
     for (let i = 0; i < secrets.fields_length; i++)
     {
@@ -51,7 +51,7 @@ function App() {
   }
 
   async function writeFile() {
-    let secret = new Secret(secretValues)
+    let secret = new Secret(defaultSecretValues)
     getIOKey()
     const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
     for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
@@ -59,7 +59,7 @@ function App() {
   }
 
   async function reset() {
-    let secret = new Secret(secretValues)
+    let secret = new Secret(defaultSecretValues)
     writeSecretsFile(secretsFileName, secretsFilePath, secret)
     await readFile()
   }
