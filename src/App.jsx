@@ -31,7 +31,7 @@ function App() {
     6: set_IO_KEY
   }
 
-  function getIOKey() {
+  function getIOFeedKey() {
     let ioFeedKey = IO_FEED_KEY
     const feedLetterIndex = feedLetters.indexOf(IO_PLUS_FEED_KEY)
     if (feedLetterIndex > -1)
@@ -61,14 +61,14 @@ function App() {
 
   async function writeFile() {
     let secret = new Secret(defaultSecretValues)
-    const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, getIOKey(), IO_KEY]
+    const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, getIOFeedKey(), IO_KEY]
     for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
     await writeSecretsFile(secretsFileName, secretsFilePath, secret)
   }
 
   async function reset() {
     let secret = new Secret(defaultSecretValues)
-    writeSecretsFile(secretsFileName, secretsFilePath, secret)
+    await writeSecretsFile(secretsFileName, secretsFilePath, secret)
     await readFile()
   }
 
