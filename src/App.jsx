@@ -141,21 +141,11 @@ function App() {
             setInput={set_IO_PLUS_FEED_KEY}
           />
           <Input
-            label="AoM Cloud Feed"
-            description="The feed the bit will GET data from or POST data to - feed X"
-            currentInput={IO_PLUS_FEED_KEY}
-            setInput={set_IO_PLUS_FEED_KEY}
-          />
-          <Input
             label="Request Rate (seconds)"
             description="Determines how often the IoT bit will try to download data, e.g. the bit will request feed data every 2 seconds with a value of 2"
             currentInput={REQUEST_RATE_SEC}
             setInput={set_REQUEST_RATE_SEC}
           />
-        </>
-      } />
-
-      <Table title="Advanced Adafruit IO" hide={true} body={<>
         </>
       } />
 
