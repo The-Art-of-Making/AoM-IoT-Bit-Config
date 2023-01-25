@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { BaseDirectory } from "@tauri-apps/api/fs"
+import { resolveResource, resourceDir } from "@tauri-apps/api/path"
 import { readSecretsFile, writeSecretsFile } from "./file_handler"
+import { platform } from "@tauri-apps/api/os"
 import Table from "./Table"
 import Input from "./Input"
 import Secret from "./secret"
 
-const secretsFilePath = BaseDirectory.Resource
-const secretsFileName = "secrets.txt"
+const secretsFile = "secrets.txt"
 const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "", "aio_IcBf80xk6xCixEHC24RZh3BmkHHc"]
 const ioPlusFeedKeyPrefix = "feed-"
 const feedLetters = ["a", "b", "c", "d", "e", "f"]
@@ -43,8 +43,30 @@ function App() {
     return ioFeedKey
   }
 
+  async function getPWDMacOS() {
+    const resourceDirPath = await resourceDir()
+    const resourceDirPathSplit = resourceDirPath.split("/")
+    return resourceDirPathSplit.slice(0, resourceDirPathSplit.length-4).join("/") + "/"
+  }
+
+  async function getSecretsFilePath() {
+    const platformName = await platform()
+    let pwd = ""
+    let secretsFilePath = ""
+    if (platformName == "darwin") {
+      pwd = await getPWDMacOS()
+      console.log(pwd)
+      secretsFilePath = pwd + secretsFile
+    }
+    else {
+      secretsFilePath = await resolveResource(secretsFile)
+    }
+    return secretsFilePath
+  }
+
   async function readFile() {
-    let secrets = await readSecretsFile(secretsFileName, secretsFilePath, defaultSecretValues)
+    const secretsFilePath = await getSecretsFilePath()
+    let secrets = await readSecretsFile(secretsFilePath, defaultSecretValues)
     secrets.log()
     for (let i = 0; i < secrets.fields_length; i++)
     {
@@ -60,19 +82,35 @@ function App() {
           }
         }
       }
+
+      if (i === 5)
+      {
+        set_IO_PLUS_FEED_KEY("")
+        for (let j = 0; j < feedLetters.length; j++)
+        {
+          if (secrets.getField(i) === ioPlusFeedKeyPrefix + feedLetters[j]) {
+            set_IO_PLUS_FEED_KEY(feedLetters[j])
+          }
+        }
+      }
     }
   }
 
   async function writeFile() {
+    const secretsFilePath = await getSecretsFilePath()
     let secret = new Secret(defaultSecretValues)
     const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, getIOFeedKey(), IO_KEY]
-    for (let i = 0; i < currentFields.length; i++) secret.setField(i, currentFields[i])
-    await writeSecretsFile(secretsFileName, secretsFilePath, secret)
+    for (let i = 0; i < currentFields.length; i++)
+    {
+      secret.setField(i, currentFields[i])
+    }
+    await writeSecretsFile(secretsFilePath, secret)
   }
 
   async function reset() {
+    const secretsFilePath = await getSecretsFilePath()
     let secret = new Secret(defaultSecretValues)
-    await writeSecretsFile(secretsFileName, secretsFilePath, secret)
+    await writeSecretsFile(secretsFilePath, secret)
     await readFile()
   }
 
