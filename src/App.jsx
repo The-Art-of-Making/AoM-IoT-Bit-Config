@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { invoke } from "@tauri-apps/api/tauri"
 import { resolveResource, resourceDir } from "@tauri-apps/api/path"
 import { readSecretsFile, writeSecretsFile } from "./file_handler"
+import { platform } from "@tauri-apps/api/os"
 import Table from "./Table"
 import Input from "./Input"
 import Secret from "./secret"
@@ -50,12 +50,17 @@ function App() {
   }
 
   async function getSecretsFilePath() {
-
-    const pwd = await getPWDMacOS()
-    console.log(pwd)
-
-    const secretsFilePath = await resolveResource(secretsFile)
-    invoke("allow_file_wrapper", { path: pwd + secretsFile })
+    const platformName = await platform()
+    let pwd = ""
+    let secretsFilePath = ""
+    if (platformName == "darwin") {
+      pwd = await getPWDMacOS()
+      console.log(pwd)
+      secretsFilePath = pwd + secretsFile
+    }
+    else {
+      secretsFilePath = await resolveResource(secretsFile)
+    }
     return secretsFilePath
   }
 
