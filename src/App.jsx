@@ -1,12 +1,15 @@
 import { useState } from "react"
-import { resolveResource } from "@tauri-apps/api/path"
+import { invoke } from "@tauri-apps/api/tauri"
+import { resolveResource, resourceDir } from "@tauri-apps/api/path"
 import { readSecretsFile, writeSecretsFile } from "./file_handler"
 import Table from "./Table"
 import Input from "./Input"
 import Secret from "./secret"
 
-const secretsFile = "./secrets.txt"
-const secretValues = ["2", "G34", "designthinking", "IO_USERNAME", "IO_GROUP", "IO_FEED_KEY", "IO_KEY"]
+const secretsFile = "secrets.txt"
+const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "", "aio_IcBf80xk6xCixEHC24RZh3BmkHHc"]
+const ioPlusFeedKeyPrefix = "feed-"
+const feedLetters = ["a", "b", "c", "d", "e", "f"]
 
 function App() {
   const [REQUEST_RATE_SEC, set_REQUEST_RATE_SEC] = useState("")
@@ -15,6 +18,7 @@ function App() {
   const [IO_USERNAME, set_IO_USERNAME] = useState("")
   const [IO_GROUP, set_IO_GROUP] = useState("")
   const [IO_FEED_KEY, set_IO_FEED_KEY] = useState("")
+  const [IO_PLUS_FEED_KEY, set_IO_PLUS_FEED_KEY] = useState("")
   const [IO_KEY, set_IO_KEY] = useState("")
 
   const setFields = {
@@ -27,25 +31,59 @@ function App() {
     6: set_IO_KEY
   }
 
+  function getIOFeedKey() {
+    let ioFeedKey = IO_FEED_KEY
+    const feedLetterIndex = feedLetters.indexOf(IO_PLUS_FEED_KEY)
+    if (feedLetterIndex > -1)
+    {
+      let key = ioPlusFeedKeyPrefix + feedLetters[feedLetterIndex]
+      set_IO_FEED_KEY(key)
+      ioFeedKey = key
+    }
+    return ioFeedKey
+  }
+
+  async function getPWDMacOS() {
+    const resourceDirPath = await resourceDir()
+    const resourceDirPathSplit = resourceDirPath.split("/")
+    return resourceDirPathSplit.slice(0, resourceDirPathSplit.length-4).join("/") + "/"
+  }
+
   async function getSecretsFilePath() {
+
+    const pwd = await getPWDMacOS()
+    console.log(pwd)
+
     const secretsFilePath = await resolveResource(secretsFile)
+    invoke("allow_file_wrapper", { path: pwd + secretsFile })
     return secretsFilePath
   }
 
   async function readFile() {
     const secretsFilePath = await getSecretsFilePath()
-    let secrets = await readSecretsFile(secretsFilePath, secretValues)
+    let secrets = await readSecretsFile(secretsFilePath, defaultSecretValues)
     secrets.log()
     for (let i = 0; i < secrets.fields_length; i++)
     {
       setFields[i](secrets.getField(i))
+
+      if (i === 5)
+      {
+        set_IO_PLUS_FEED_KEY("")
+        for (let j = 0; j < feedLetters.length; j++)
+        {
+          if (secrets.getField(i) === ioPlusFeedKeyPrefix + feedLetters[j]) {
+            set_IO_PLUS_FEED_KEY(feedLetters[j])
+          }
+        }
+      }
     }
   }
 
   async function writeFile() {
     const secretsFilePath = await getSecretsFilePath()
-    let secret = new Secret(secretValues)
-    const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, IO_FEED_KEY, IO_KEY]
+    let secret = new Secret(defaultSecretValues)
+    const currentFields = [REQUEST_RATE_SEC, SECRET_SSID, SECRET_PASS, IO_USERNAME, IO_GROUP, getIOFeedKey(), IO_KEY]
     for (let i = 0; i < currentFields.length; i++)
     {
       secret.setField(i, currentFields[i])
@@ -55,8 +93,8 @@ function App() {
 
   async function reset() {
     const secretsFilePath = await getSecretsFilePath()
-    let secret = new Secret(secretValues)
-    writeSecretsFile(secretsFilePath, secret)
+    let secret = new Secret(defaultSecretValues)
+    await writeSecretsFile(secretsFilePath, secret)
     await readFile()
   }
 
@@ -81,11 +119,21 @@ function App() {
       <Table title="Adafruit IO" hide={true} body={
         <>
           <Input
+            label="AoM Cloud Feed"
+            description="The feed the bit will GET data from or POST data to - feed X"
+            currentInput={IO_PLUS_FEED_KEY}
+            setInput={set_IO_PLUS_FEED_KEY}
+          />
+          <Input
             label="Request Rate (seconds)"
             description="Determines how often the IoT bit will try to download data, e.g. the bit will request feed data every 2 seconds with a value of 2"
             currentInput={REQUEST_RATE_SEC}
             setInput={set_REQUEST_RATE_SEC}
           />
+        </>
+      } />
+
+      <Table title="Advanced Adafruit IO" hide={true} body={<>
           <Input
             label="Adafruit IO Username"
             description="The Adafruit IO username of the AoM Cloud - aom_cloud"
