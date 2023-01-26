@@ -36,6 +36,14 @@ To build the project, run
 
 This will create a build in `src-tauri/target/release` for your system's OS.
 
+If you are building for macOS,
+
+`npm run tauri build -- --target universal-apple-darwin`
+
+can be used to produce a universal macOS binary which runs on both Apple silicon and Intel-based Macs. Before running this command, make sure both targets for Apple silicon and Intel-based machines are installed and up to date with
+
+`rustup target add aarch64-apple-darwin x86_64-apple-darwin`
+
 Note: If you are on a Debian-based system such as Ubuntu, you may need to install additional packages with the following command in order to build the project for your system
 
 `sudo apt update && sudo apt install -y libglib2.0-dev libgtk-3-dev libsoup2.4-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev`
