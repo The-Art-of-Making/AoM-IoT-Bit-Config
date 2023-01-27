@@ -7,7 +7,7 @@ import Input from "./Input"
 import Secret from "./secret"
 
 const secretsFile = "secrets.txt"
-const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "", "aio_zOvQ76N5ZcJPsSZioc1p3de1GPXj"]
+const defaultSecretValues = ["2", "G34", "designthinking", "aom_cloud", "cloud", "", "aio_NJfv16SrWTD9ftxtNEAQwdnB47a9"]
 const ioPlusFeedKeyPrefix = "feed-"
 const feedLetters = ["a", "b", "c", "d", "e", "f"]
 
